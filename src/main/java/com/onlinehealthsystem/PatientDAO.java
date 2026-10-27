@@ -31,10 +31,15 @@ public class PatientDAO {
         	patient.setSalt(result.getString("Salt"));
         }
         
-        Boolean status = PasswordEncoder.verifyUserPassword(userPassword, patient.getUserPassword(), patient.getSalt());  
-        if (status != true)  
-        {  
-        	patient = null;  
+        if (patient == null) {
+        	connection.close();
+        	return null;
+        }
+
+        Boolean status = PasswordEncoder.verifyUserPassword(userPassword, patient.getUserPassword(), patient.getSalt());
+        if (status != true)
+        {
+        	patient = null;
         }
         else
         {
@@ -169,9 +174,12 @@ public class PatientDAO {
         PreparedStatement statement5 = connection.prepareStatement(sql5);
         statement5.setInt(1, loginID);
         statement5.executeUpdate();
- 
+
         connection.close();
-        
+
+        patient = new Patient();
+        patient.setLoginID(loginID);
+
         return patient;
     }
     

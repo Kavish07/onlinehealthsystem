@@ -16,7 +16,15 @@ public class ListPatientsServlet extends HttpServlet {
         super();
     }
     
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {  
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        Doctor admin = (session != null) ? (Doctor) session.getAttribute("doctor") : null;
+
+        if (admin == null || !admin.getUserName().equals("admin@gmail.com")) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
         PatientDAO patientDao = new PatientDAO();
          
         try {

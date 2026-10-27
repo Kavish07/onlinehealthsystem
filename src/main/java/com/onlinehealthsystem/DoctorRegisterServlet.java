@@ -18,6 +18,14 @@ public class DoctorRegisterServlet extends HttpServlet {
     }
  
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        Doctor admin = (session != null) ? (Doctor) session.getAttribute("doctor") : null;
+
+        if (admin == null || !admin.getUserName().equals("admin@gmail.com")) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
         String userName = request.getParameter("username");
         String userPassword = request.getParameter("password");
         String firstName = request.getParameter("firstname");
@@ -41,8 +49,7 @@ public class DoctorRegisterServlet extends HttpServlet {
              
             if (doctor == null) {
             	doctor = doctorDao.registerDoctor(userName, userPassword, firstName, lastName, nationalID, dateOfBirth, sex, address, city, weight, height, qualifications, speciality, departmentCode);
-            	
-            	HttpSession session = request.getSession();
+
                 session.setAttribute("doctor", doctor);
                 
                 List<Doctor> listDoctors = doctorDao.listDoctors();                    

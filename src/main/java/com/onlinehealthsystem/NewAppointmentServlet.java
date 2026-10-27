@@ -16,12 +16,20 @@ public class NewAppointmentServlet extends HttpServlet {
     }
  
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        Patient patient = (session != null) ? (Patient) session.getAttribute("patient") : null;
+
+        if (patient == null) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
         Date appointmentDate = Date.valueOf(request.getParameter("dateofappointment"));
         String location = request.getParameter("location");
-        String departmentCode = request.getParameter("department"); 
-        int patientID = Integer.parseInt(request.getParameter("patientID")); 
+        String departmentCode = request.getParameter("department");
+        int patientID = patient.getLoginID();
         int doctorID = Integer.parseInt(request.getParameter("doctor"));
-        
+
         AppointmentDAO appointmentDao = new AppointmentDAO();
          
         try {
@@ -29,8 +37,7 @@ public class NewAppointmentServlet extends HttpServlet {
             String destPage = "home.jsp";
              
             appointment = appointmentDao.registerAppointment(appointmentDate, location, departmentCode, patientID, doctorID);
-            	
-            HttpSession session = request.getSession();
+
             session.setAttribute("appointment", appointment);
             String message = "Appointment successfully created";
             request.setAttribute("message", message);

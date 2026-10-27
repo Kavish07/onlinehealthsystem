@@ -36,10 +36,15 @@ public class DoctorDAO {
         	doctor.setSalt(result.getString("Salt"));
         }
         
+        if (doctor == null) {
+        	connection.close();
+        	return null;
+        }
+
         Boolean status = PasswordEncoder.verifyUserPassword(userPassword, doctor.getUserPassword(), doctor.getSalt());
-        if (status != true)  
-        {  
-        	doctor = null;  
+        if (status != true)
+        {
+        	doctor = null;
         }
         else
         {
@@ -176,9 +181,12 @@ public class DoctorDAO {
         PreparedStatement statement5 = connection.prepareStatement(sql5);
         statement5.setInt(1, loginID);
         statement5.executeUpdate();
- 
+
         connection.close();
-        
+
+        doctor = new Doctor();
+        doctor.setLoginID(loginID);
+
         return doctor;
     }
     

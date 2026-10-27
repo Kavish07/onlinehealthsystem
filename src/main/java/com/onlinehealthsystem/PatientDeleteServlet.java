@@ -17,8 +17,16 @@ public class PatientDeleteServlet extends HttpServlet {
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        Doctor admin = (session != null) ? (Doctor) session.getAttribute("doctor") : null;
+
+        if (admin == null || !admin.getUserName().equals("admin@gmail.com")) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
         int loginID = Integer.parseInt(request.getParameter("loginID"));
-         
+
         DoctorDAO doctorDao = new DoctorDAO();
         PatientDAO patientDao = new PatientDAO();
         AppointmentDAO appointmentDao = new AppointmentDAO();
@@ -29,7 +37,6 @@ public class PatientDeleteServlet extends HttpServlet {
             String destPage = "admin.jsp";
             
             if (patient != null) {
-	            HttpSession session = request.getSession();
 	            session.setAttribute("patient", patient);
 	            
 	            List<Patient> listPatients = patientDao.listPatients();                    

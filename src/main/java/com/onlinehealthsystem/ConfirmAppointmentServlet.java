@@ -21,28 +21,33 @@ public class ConfirmAppointmentServlet extends HttpServlet {
     }
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        Doctor doctor = (session != null) ? (Doctor) session.getAttribute("doctor") : null;
+
+        if (doctor == null) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
         int appointmentId = Integer.parseInt(request.getParameter("appointmentID"));
-        
+
         AppointmentDAO appointmentDao = new AppointmentDAO();
-        
+
         try {
             Appointment appointment = null;
             String destPage = "home2.jsp";
-             
+
             appointment = appointmentDao.confirmAppointment(appointmentId);
-            
-            HttpSession session = request.getSession();
+
             session.setAttribute("appointment", appointment);
-            
-            List<Appointment> listAppointments = appointmentDao.listAppointments();                    
+
+            List<Appointment> listAppointments = appointmentDao.listAppointments();
             session.setAttribute("listAppointments", listAppointments);
-            
+
             String message = "Appointment successfully updated";
             request.setAttribute("message", message);
-            
-            Doctor doctor = (Doctor) session.getAttribute("doctor");
-            
-            if (doctor.getUserName().equals("admin@gmail.com")) {                
+
+            if (doctor.getUserName().equals("admin@gmail.com")) {
             	destPage = "admin.jsp";
             } else {
             	destPage = "home2.jsp";

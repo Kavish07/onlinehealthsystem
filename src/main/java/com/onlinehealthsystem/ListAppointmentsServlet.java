@@ -10,6 +10,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/ListAppointmentsServlet")
 public class ListAppointmentsServlet extends HttpServlet {
@@ -19,7 +20,15 @@ public class ListAppointmentsServlet extends HttpServlet {
         super();
     }
     
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {  
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        Doctor doctor = (session != null) ? (Doctor) session.getAttribute("doctor") : null;
+
+        if (doctor == null) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
         AppointmentDAO appointmentDao = new AppointmentDAO();
          
         try {
