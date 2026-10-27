@@ -1,7 +1,8 @@
 package com.onlinehealthsystem;
 
-import java.security.NoSuchAlgorithmException;  
-import java.security.SecureRandom;  
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;  
 import java.util.Arrays;  
 import java.util.Base64;  
@@ -61,16 +62,22 @@ public class PasswordEncoder {
 	}  
 	      
 	/* Method to verify if both password matches or not */  
-	public static boolean verifyUserPassword(String providedPassword, String securedPassword, String salt)  
-	{  
-		boolean finalval = false;  
-	          
-		/* Generate New secure password with the same salt */  
-		String newSecurePassword = generateSecurePassword(providedPassword, salt);  
-	          
-		/* Check if two passwords are equal */  
-		finalval = newSecurePassword.equalsIgnoreCase(securedPassword);  
-	          
-		return finalval;  
-	}  
+	public static boolean verifyUserPassword(String providedPassword, String securedPassword, String salt)
+	{
+		/* Generate New secure password with the same salt */
+		String newSecurePassword = generateSecurePassword(providedPassword, salt);
+
+		/* Constant-time comparison of the raw hash bytes, to avoid a timing side-channel */
+		try
+		{
+			return MessageDigest.isEqual(
+				Base64.getDecoder().decode(newSecurePassword),
+				Base64.getDecoder().decode(securedPassword)
+			);
+		}
+		catch (IllegalArgumentException e)
+		{
+			return false;
+		}
+	}
 }  

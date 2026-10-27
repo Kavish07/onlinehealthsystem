@@ -18,13 +18,13 @@ public class PatientLogoutServlet extends HttpServlet {
  
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
-        int loginID = Integer.parseInt(request.getParameter("loginID"));
-        
+        Patient patient = (session != null) ? (Patient) session.getAttribute("patient") : null;
+
         PatientDAO patientDao = new PatientDAO();
-        
-		if (session != null) {
+
+		if (session != null && patient != null) {
 			try {
-				patientDao.registerLogout(loginID, LocalDateTime.now());
+				patientDao.registerLogout(patient.getLoginID(), LocalDateTime.now());
 			} catch (ClassNotFoundException | SQLException e) {
 				String message = "Invalid loginID";
                 request.setAttribute("message", message);
