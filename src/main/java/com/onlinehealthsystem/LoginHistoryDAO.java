@@ -37,9 +37,10 @@ public class LoginHistoryDAO {
 
         Class.forName("com.mysql.cj.jdbc.Driver");
         try (Connection connection = DriverManager.getConnection(jdbcURL, dbUser, dbPassword)) {
-            String sql = "update LoginHistory set LogoutDateTime = ? where Login = ? and LogoutDateTime is null";
+            String sql = "update LoginHistory set LogoutDateTime = ? where LoginID = ? and LogoutDateTime is null";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setObject(1, logoutDateTime);
+            statement.setInt(2, loginID);
 
             statement.executeUpdate();
         }

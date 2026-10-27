@@ -53,11 +53,11 @@ public class AppointmentDAO {
             if (result.next()) {
             	appointment.setAppointmentDate(result.getDate("Date"));
             	appointment.setLocation(result.getString("Location"));
-            	appointment.setDepartmentName(result.getString("de.DepartmenName"));
-            	appointment.setDepartmentCode(result.getString("de.DepartmenCode"));
-            	appointment.setPatientID(result.getInt("l.PatientID"));
+            	appointment.setDepartmentName(result.getString("de.DepartmentName"));
+            	appointment.setDepartmentCode(result.getString("de.DepartmentCode"));
+            	appointment.setPatientID(result.getInt("p.PatientID"));
             	appointment.setPatientName(result.getString("p.FirstName") + result.getString("p.LastName"));
-            	appointment.setDoctorID(result.getInt("l.DoctorID"));
+            	appointment.setDoctorID(result.getInt("d.DoctorID"));
             	appointment.setDoctorName(result.getString("d.FirstName") + result.getString("d.LastName"));
             	appointment.setApproved(result.getBoolean("Approved"));
             }
