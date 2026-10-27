@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+	id="WebApp_ID" version="4.0">
+	<display-name>OnlineHealthSystem</display-name>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+
+	<servlet>
+		<servlet-name>com.onlinehealthsystem.PatientLoginServlet</servlet-name>
+		<servlet-class>com.onlinehealthsystem.PatientLoginServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>com.onlinehealthsystem.PatientLoginServlet</servlet-name>
+		<url-pattern>/PatientLoginServlet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>com.onlinehealthsystem.DoctorLoginServlet</servlet-name>
+		<servlet-class>com.onlinehealthsystem.DoctorLoginServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>com.onlinehealthsystem.DoctorLoginServlet</servlet-name>
+		<url-pattern>/DoctorLoginServlet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>com.onlinehealthsystem.PatientLogoutServlet</servlet-name>
+		<servlet-class>com.onlinehealthsystem.PatientLogoutServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>com.onlinehealthsystem.PatientLogoutServlet</servlet-name>
+		<url-pattern>/PatientLogoutServlet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>com.onlinehealthsystem.DoctorLogoutServlet</servlet-name>
+		<servlet-class>com.onlinehealthsystem.DoctorLogoutServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>com.onlinehealthsystem.DoctorLogoutServlet</servlet-name>
+		<url-pattern>/DoctorLogoutServlet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>com.onlinehealthsystem.UpdatePatientPasswordServlet</servlet-name>
+		<servlet-class>com.onlinehealthsystem.UpdatePatientPasswordServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>com.onlinehealthsystem.UpdatePatientPasswordServlet</servlet-name>
+		<url-pattern>/UpdatePatientPasswordServlet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>com.onlinehealthsystem.UpdateDoctorPasswordServlet</servlet-name>
+		<servlet-class>com.onlinehealthsystem.UpdateDoctorPasswordServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>com.onlinehealthsystem.UpdateDoctorPasswordServlet</servlet-name>
+		<url-pattern>/UpdateDoctorPasswordServlet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>com.onlinehealthsystem.PatientRegisterServlet</servlet-name>
+		<servlet-class>com.onlinehealthsystem.PatientRegisterServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>com.onlinehealthsystem.PatientRegisterServlet</servlet-name>
+		<url-pattern>/PatientRegisterServlet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>com.onlinehealthsystem.DoctorRegisterServlet</servlet-name>
+		<servlet-class>com.onlinehealthsystem.DoctorRegisterServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>com.onlinehealthsystem.DoctorRegisterServlet</servlet-name>
+		<url-pattern>/DoctorRegisterServlet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>com.onlinehealthsystem.PatientDeleteServlet</servlet-name>
+		<servlet-class>com.onlinehealthsystem.PatientDeleteServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>com.onlinehealthsystem.PatientDeleteServlet</servlet-name>
+		<url-pattern>/PatientDeleteServlet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>com.onlinehealthsystem.DoctorDeleteServlet</servlet-name>
+		<servlet-class>com.onlinehealthsystem.DoctorDeleteServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>com.onlinehealthsystem.DoctorDeleteServlet</servlet-name>
+		<url-pattern>/DoctorDeleteServlet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>com.onlinehealthsystem.ListPatientsServlet</servlet-name>
+		<servlet-class>com.onlinehealthsystem.ListPatientsServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>com.onlinehealthsystem.ListPatientsServlet</servlet-name>
+		<url-pattern>/ListPatientsServlet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>com.onlinehealthsystem.ListDoctorsServlet</servlet-name>
+		<servlet-class>com.onlinehealthsystem.ListDoctorsServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>com.onlinehealthsystem.ListDoctorsServlet</servlet-name>
+		<url-pattern>/ListDoctorsServlet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>com.onlinehealthsystem.ListAppointmentsServlet</servlet-name>
+		<servlet-class>com.onlinehealthsystem.ListAppointmentsServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>com.onlinehealthsystem.ListAppointmentsServlet</servlet-name>
+		<url-pattern>/ListAppointmentsServlet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>com.onlinehealthsystem.ListTreatmentsServlet</servlet-name>
+		<servlet-class>com.onlinehealthsystem.ListTreatmentsServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>com.onlinehealthsystem.ListTreatmentsServlet</servlet-name>
+		<url-pattern>/ListTreatmentsServlet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>com.onlinehealthsystem.NewAppointmentServlet</servlet-name>
+		<servlet-class>com.onlinehealthsystem.NewAppointmentServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>com.onlinehealthsystem.NewAppointmentServlet</servlet-name>
+		<url-pattern>/NewAppointmentServlet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>com.onlinehealthsystem.NewTreatmentServlet</servlet-name>
+		<servlet-class>com.onlinehealthsystem.NewTreatmentServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>com.onlinehealthsystem.NewTreatmentServlet</servlet-name>
+		<url-pattern>/NewTreatmentServlet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>com.onlinehealthsystem.ConfirmAppointmentServlet</servlet-name>
+		<servlet-class>com.onlinehealthsystem.ConfirmAppointmentServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>com.onlinehealthsystem.ConfirmAppointmentServlet</servlet-name>
+		<url-pattern>/ConfirmAppointmentServlet</url-pattern>
+	</servlet-mapping>
+</web-app>
