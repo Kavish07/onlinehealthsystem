@@ -24,5 +24,29 @@ jobs:
       - name: Make mvnw executable
         run: chmod +x mvnw
 
+      - name: Stop pre-installed MySQL
+        # ubuntu-latest runners ship with MySQL already listening on 3306.
+        # AbstractMySQLIntegrationTest binds its Testcontainers MySQL to that
+        # exact fixed host port (to match the DAOs' hardcoded
+        # jdbc:mysql://localhost:3306 URL), so the pre-installed service has
+        # to be stopped first or the container fails to bind the port.
+        run: sudo systemctl stop mysql.service || true
+
       - name: Build and test
         run: ./mvnw -B test
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Deploy to Fly.io
+        run: flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
