@@ -20,8 +20,8 @@ Start this work only after the migration PRD reaches its end state (zero referen
 - See `GLOSSARY.md` for the resolved `Role`/`Admin` terminology.
 
 ### 2. CI pipeline
-- Add a GitHub Actions workflow running `mvn test` on push/PR. The project-local `.mvn/settings.xml` already bypasses the unreachable internal Nexus mirror, and Testcontainers (already a test dependency) runs fine against GitHub-hosted runners' built-in Docker — no additional CI-specific wiring needed for either.
-- Add SpotBugs to the same pipeline, not a style linter (Checkstyle). This project's actual bug history (JDBC leaks, SQL injection risk, null-deref-on-missing-row — see the migration PRD's background) is exactly what a bug-pattern checker catches; a style linter would mostly bikeshed formatting.
+- ~~Add a GitHub Actions workflow running `mvn test` on push/PR.~~ Done ahead of schedule: `.github/workflows/ci.yml` runs `./mvnw test` on push/PR to `master`. The project-local `.mvn/settings.xml` already bypasses the unreachable internal Nexus mirror, and Testcontainers (already a test dependency) runs fine against GitHub-hosted runners' built-in Docker — no additional CI-specific wiring needed for either. (`mvnw` is checked out without its executable bit since the repo was authored on Windows — the workflow `chmod +x`s it as a step rather than fixing the tracked file mode.)
+- Still pending: add SpotBugs to the same pipeline, not a style linter (Checkstyle). This project's actual bug history (JDBC leaks, SQL injection risk, null-deref-on-missing-row — see the migration PRD's background) is exactly what a bug-pattern checker catches; a style linter would mostly bikeshed formatting.
 
 ### 3. Observability baseline
 - There is currently zero logging anywhere in `src/main` — no `Logger`, no `System.out`, no `printStackTrace`; exceptions are wrapped and rethrown silently.
