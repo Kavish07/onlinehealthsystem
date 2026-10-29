@@ -29,6 +29,7 @@ There is no linter or test suite exercising the legacy `com.onlinehealthsystem` 
 This repo has Claude Code skills/agents already set up for its known conventions and known issues — use them instead of re-deriving the patterns from scratch:
 - `legacy-dao-servlet-pattern` skill / `dao-servlet-builder` agent — for writing new DAO methods or Servlets matching existing conventions.
 - `jdbc-security-review` skill / `legacy-code-reviewer` agent — for reviewing DAO/Servlet/password-handling changes (SQL injection, unclosed JDBC resources, null-deref after `result.next()`, non-constant-time password comparison, session vs. request-parameter role checks).
+- `spring-boot-code-reviewer` agent — reviews the new Spring Boot/JPA code each migration slice produces (`@Entity`/`@Repository`/`@Service`/`@Controller`), checking it for behavior parity with the legacy code it replaces and for not reintroducing the bug patterns `jdbc-security-review` targets. Use after each `migration-slice-runner` slice; `legacy-code-reviewer` only covers the old `com.onlinehealthsystem` package.
 - `role-view-jsp-consolidation` skill — for merging or adding to the numbered JSP variants described above without changing per-role behavior.
 - `spring-boot-migration` skill — for incrementally migrating this app to Spring Boot/Spring Data JPA, starting from fixing `OnlineHealthSystemApplication`.
 - `spring-boot-tdd` skill — TDD loop (JUnit 5/Mockito/Spring test slices) once Spring Boot code exists.

@@ -1,5 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.3.4</version>
+    <relativePath/>
+  </parent>
+
   <groupId>OnlineHealthSystem</groupId>
   <artifactId>OnlineHealthSystem</artifactId>
   <version>0.0.1-SNAPSHOT</version>
@@ -8,49 +16,110 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
 				<configuration>
-					<release>14</release>
+					<release>17</release>
 				</configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>3.2.3</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<!-- Byte Buddy (Mockito's default mock maker) doesn't yet
+					     officially support the bytecode version emitted by
+					     newer JDKs (e.g. 25) that this project's tests may run
+					     under, even though the project itself still targets
+					     release 17. Without this, @MockBean/@Mock on concrete
+					     classes fails with "Java 25 is not supported by the
+					     current version of Byte Buddy". -->
+					<argLine>-Dnet.bytebuddy.experimental=true</argLine>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>
 
 	<dependencies>
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.27</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>jakarta.servlet</groupId>
-			<artifactId>jakarta.servlet-api</artifactId>
-			<version>5.0.0-M2</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>jstl</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.2</version>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-jasper</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.servlet.jsp.jstl</groupId>
+			<artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+			<version>3.0.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish.web</groupId>
 			<artifactId>jakarta.servlet.jsp.jstl</artifactId>
-			<version>2.0.0</version>
-		</dependency>
-		<dependency>
-    		<groupId>javax.servlet</groupId>
-    		<artifactId>servlet-api</artifactId>
-    		<version>3.0-alpha-1</version>
-    		<scope>provided</scope>
+			<version>3.0.1</version>
 		</dependency>
 		<dependency>
     		<groupId>com.efsavage.jquery</groupId>
     		<artifactId>jquery-maven</artifactId>
     		<version>1.8.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>1.20.4</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>mysql</artifactId>
+			<version>1.20.4</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
