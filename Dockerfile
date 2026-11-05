@@ -25,5 +25,12 @@ COPY src/test/resources/schema.sql /app/schema.sql
 COPY docker-entrypoint.sh /app/docker-entrypoint.sh
 RUN chmod +x /app/docker-entrypoint.sh
 
+# No .env file ships in the image (see .gitignore) - these match what
+# docker-entrypoint.sh sets the colocated Postgres user/password to, so the
+# app's own spring.datasource.* (now env-var-driven, see
+# src/main/resources/application.properties) still resolves inside the container.
+ENV DB_USERNAME=postgres
+ENV DB_PASSWORD=root
+
 EXPOSE 8080
 ENTRYPOINT ["/app/docker-entrypoint.sh"]

@@ -37,3 +37,8 @@ build/
 # override when the default global config location isn't usable in this
 # environment. Never commit this; it's a secret, not project config.
 .gh-config/
+
+# Local DB credentials for src/main/resources/application.properties
+# (spring.config.import). Never commit this; see .env.example for the
+# expected variables.
+.env
