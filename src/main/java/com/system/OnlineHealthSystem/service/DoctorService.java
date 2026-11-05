@@ -102,6 +102,16 @@ public class DoctorService {
     public com.onlinehealthsystem.Doctor register(String userName, String rawPassword, String firstName,
             String lastName, String nationalId, LocalDate dateOfBirth, String sex, String address, String city,
             int weight, int height, String qualifications, String speciality, String departmentCode) {
+        RegistrationValidator.validateUsername(userName);
+        RegistrationValidator.validateName("First name", firstName);
+        RegistrationValidator.validateName("Last name", lastName);
+        RegistrationValidator.validateNationalId(nationalId);
+        RegistrationValidator.validateSex(sex);
+        RegistrationValidator.validateFreeText("Address", address);
+        RegistrationValidator.validateFreeText("City", city);
+        RegistrationValidator.validateFreeText("Qualifications", qualifications);
+        RegistrationValidator.validateFreeText("Speciality", speciality);
+
         String salt = PasswordEncoder.getSaltvalue(SALT_LENGTH);
         String hashedPassword = PasswordEncoder.generateSecurePassword(rawPassword, salt);
 

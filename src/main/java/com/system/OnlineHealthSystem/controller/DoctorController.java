@@ -116,18 +116,23 @@ public class DoctorController {
         }
 
         if (!doctorService.isUsernameTaken(userName)) {
-            // Deliberately doesn't do session.setAttribute("doctor", ...)
-            // with the newly created doctor - this endpoint is called by
-            // the admin to register someone else, and overwriting the
-            // "doctor" session attribute here would silently log the admin
-            // out of their own identity and into the new doctor's (the
-            // exact bug DoctorRegisterServlet's own comment documented and
-            // avoided).
-            doctorService.register(userName, password, firstName, lastName, nationalId, LocalDate.parse(dateOfBirth),
-                    sex, address, city, weight, height, qualifications, speciality, departmentCode);
+            try {
+                // Deliberately doesn't do session.setAttribute("doctor", ...)
+                // with the newly created doctor - this endpoint is called by
+                // the admin to register someone else, and overwriting the
+                // "doctor" session attribute here would silently log the admin
+                // out of their own identity and into the new doctor's (the
+                // exact bug DoctorRegisterServlet's own comment documented and
+                // avoided).
+                doctorService.register(userName, password, firstName, lastName, nationalId,
+                        LocalDate.parse(dateOfBirth), sex, address, city, weight, height, qualifications, speciality,
+                        departmentCode);
 
-            session.setAttribute("listDoctors", doctorService.listDoctors());
-            request.setAttribute("message", "User successfully created");
+                session.setAttribute("listDoctors", doctorService.listDoctors());
+                request.setAttribute("message", "User successfully created");
+            } catch (IllegalArgumentException e) {
+                request.setAttribute("message", e.getMessage());
+            }
         } else {
             request.setAttribute("message", "User already exists");
         }

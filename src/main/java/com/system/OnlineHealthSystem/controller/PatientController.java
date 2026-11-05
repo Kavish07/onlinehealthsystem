@@ -125,12 +125,16 @@ public class PatientController {
         String destPage = "index.jsp";
 
         if (!patientService.isUsernameTaken(userName)) {
-            com.onlinehealthsystem.Patient patient = patientService.register(userName, password, firstName,
-                    lastName, nationalId, LocalDate.parse(dateOfBirth), sex, address, city, weight, height);
+            try {
+                com.onlinehealthsystem.Patient patient = patientService.register(userName, password, firstName,
+                        lastName, nationalId, LocalDate.parse(dateOfBirth), sex, address, city, weight, height);
 
-            HttpSession session = request.getSession();
-            session.setAttribute("patient", patient);
-            request.setAttribute("message", "User successfully created");
+                HttpSession session = request.getSession();
+                session.setAttribute("patient", patient);
+                request.setAttribute("message", "User successfully created");
+            } catch (IllegalArgumentException e) {
+                request.setAttribute("message", e.getMessage());
+            }
         } else {
             request.setAttribute("message", "User already exists");
         }

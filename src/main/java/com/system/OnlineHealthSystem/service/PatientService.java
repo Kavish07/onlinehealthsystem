@@ -96,6 +96,14 @@ public class PatientService {
     public com.onlinehealthsystem.Patient register(String userName, String rawPassword, String firstName,
             String lastName, String nationalId, LocalDate dateOfBirth, String sex, String address, String city,
             int weight, int height) {
+        RegistrationValidator.validateUsername(userName);
+        RegistrationValidator.validateName("First name", firstName);
+        RegistrationValidator.validateName("Last name", lastName);
+        RegistrationValidator.validateNationalId(nationalId);
+        RegistrationValidator.validateSex(sex);
+        RegistrationValidator.validateFreeText("Address", address);
+        RegistrationValidator.validateFreeText("City", city);
+
         String salt = PasswordEncoder.getSaltvalue(SALT_LENGTH);
         String hashedPassword = PasswordEncoder.generateSecurePassword(rawPassword, salt);
 

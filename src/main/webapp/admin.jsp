@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -55,13 +56,13 @@
 											<c:forEach var="patient" items="${listPatients}">
 	                							<tr id="${patient.getLoginID()}">
 	                								<td>
-	                									<input type="text" name="name${patient.getLoginID()}" value="${patient.getFirstName()} ${patient.getLastName()}" disabled/>
+	                									<input type="text" name="name${patient.getLoginID()}" value="${fn:escapeXml(patient.getFirstName())} ${fn:escapeXml(patient.getLastName())}" disabled/>
 	                									<input type="hidden" name="loginID" value="${patient.getLoginID()}" />
 	                								</td>
-	                								<td><input type="text" name="national${patient.getLoginID()}" value="${patient.getNationalID()}" disabled/></td>
-	                								<td><input type="text" name="email${patient.getLoginID()}" value="${patient.getUserName()}" disabled/></td>
+	                								<td><input type="text" name="national${patient.getLoginID()}" value="${fn:escapeXml(patient.getNationalID())}" disabled/></td>
+	                								<td><input type="text" name="email${patient.getLoginID()}" value="${fn:escapeXml(patient.getUserName())}" disabled/></td>
 	                								<td><input type="date" name="dateofbirth${patient.getLoginID()}" value="${patient.getDateOfBirth()}" style="color: black;" disabled /></td>
-						    						<td><input type="text" name="sex${patient.getLoginID()}" value="${patient.getSex()}" disabled/></td>
+						    						<td><input type="text" name="sex${patient.getLoginID()}" value="${fn:escapeXml(patient.getSex())}" disabled/></td>
 	                    							<td><input type="submit" value="Delete" class="primary" /></td>
 								                </tr>
 								            </c:forEach>
@@ -100,13 +101,13 @@
 											<c:forEach var="doctor" items="${listDoctors}">
 	                							<tr id="${doctor.getLoginID()}">
 	                								<td>
-	                									<input type="text" name="name${doctor.getLoginID()}" value="${doctor.getFirstName()} ${doctor.getLastName()}" disabled/>
+	                									<input type="text" name="name${doctor.getLoginID()}" value="${fn:escapeXml(doctor.getFirstName())} ${fn:escapeXml(doctor.getLastName())}" disabled/>
 	                									<input type="hidden" name="loginID" value="${doctor.getLoginID()}" />
 	                								</td>
-	                								<td><input type="text" name="national${doctor.getLoginID()}" value="${doctor.getNationalID()}" disabled/></td>
-	                								<td><input type="text" name="email${doctor.getLoginID()}" value="${doctor.getUserName()}" disabled/></td>
+	                								<td><input type="text" name="national${doctor.getLoginID()}" value="${fn:escapeXml(doctor.getNationalID())}" disabled/></td>
+	                								<td><input type="text" name="email${doctor.getLoginID()}" value="${fn:escapeXml(doctor.getUserName())}" disabled/></td>
 	                								<td><input type="date" name="dateofbirth${doctor.getLoginID()}" value="${doctor.getDateOfBirth()}" style="color: black;" disabled /></td>
-						    						<td><input type="text" name="sex${doctor.getLoginID()}" value="${doctor.getSex()}" disabled/></td>
+						    						<td><input type="text" name="sex${doctor.getLoginID()}" value="${fn:escapeXml(doctor.getSex())}" disabled/></td>
 	                    							<td><input type="submit" value="Delete" class="primary" /></td>
 								                </tr>
 								            </c:forEach>
