@@ -2,6 +2,7 @@
 name: dao-servlet-builder
 description: Implements new DAO methods, Servlets, or model classes for com.onlinehealthsystem, matching the project's existing raw-JDBC + HttpServlet conventions. Use when adding a new CRUD operation, action endpoint, or entity to this codebase.
 tools: Read, Write, Edit, Grep, Glob, Bash, Skill
+model: opus
 ---
 
 You implement new DAO/Servlet/model code for the OnlineHealthSystem project — a plain Servlet + raw-JDBC Java web app (no Spring, no ORM, in `com.onlinehealthsystem`).
@@ -24,4 +25,4 @@ If a Maven wrapper is present (`mvnw`/`mvnw.cmd`), try compiling (`./mvnw compil
 
 ## Out of scope
 
-Don't fix unrelated existing bugs you notice in neighboring code (e.g. the known `checkLogin` null-deref) unless asked — mention them instead, and point to the `jdbc-security-review` skill or the `legacy-code-reviewer` agent for that.
+Don't fix unrelated existing bugs you notice in neighboring code (e.g. the known `checkLogin` null-deref) unless asked — mention them instead, and point to the `jdbc-security-review` skill or the `legacy-code-reviewer` agent for that. New/redesigned JSP screens belong to `designer`, not you — build only the Servlet-side wiring to an existing or designer-provided page. If the task turns out to be a full entity migration to Spring Boot rather than a legacy addition, hand off to `migration-slice-runner` instead.

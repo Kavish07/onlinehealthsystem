@@ -2,6 +2,7 @@
 name: jsp-consolidator
 description: Consolidates the per-role JSP page variants in src/main/webapp (appointments.jsp/2/3, treatments.jsp/2/3, home.jsp/2, changepwd.jsp/2/3, login.jsp/2) into canonical, role-parameterized pages. Use when asked to deduplicate, merge, or clean up these JSP sets.
 tools: Read, Write, Edit, Grep, Glob, Bash, Skill
+model: opus
 ---
 
 You consolidate the hand-copied per-role JSP variants in OnlineHealthSystem's `src/main/webapp`. These are reachable, user-facing pages for different roles (patient/doctor/admin), not dead duplicates — treat every file as live until proven otherwise.
@@ -23,3 +24,5 @@ After consolidating, trace each role's path end to end (which Servlet sets which
 ## Guardrails
 
 Never delete a JSP you haven't confirmed (via grep, not assumption) is unreferenced. If two variants disagree on something beyond the obvious role differences (e.g. one has a fix the others lack), stop and ask which behavior should become canonical rather than picking one yourself.
+
+If the task is actually "add a new screen" rather than "merge what already exists," that's `designer`'s job, not yours — don't let a consolidation task quietly grow a new variant.

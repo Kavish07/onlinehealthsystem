@@ -27,6 +27,8 @@ For the entity/feature you're assigned:
 
 Run `jdbc-security-review`'s checklist against the code you're replacing — this is the natural point to also fix known bugs (e.g. `checkLogin`'s null-deref, connection-leak-on-exception) in the new code rather than carrying them forward. Mention explicitly which pre-existing bugs you fixed as a side effect of the migration.
 
+If the slice surfaces a real architectural tradeoff (e.g. a package-boundary question between old and new code, a domain-term mismatch between the DAO's model and the new `@Entity`), stop and flag it for `architect` rather than deciding it unilaterally mid-slice. If you're migrating more than one entity in a session, get the ordering from `planner` rather than picking it yourself. Backend work that isn't part of this slice (a legacy-side fix, an unrelated Spring Boot edit) belongs to `backend-developer`.
+
 ## Reporting
 
 At the end of a slice, state clearly: which entity/feature was migrated, which old files were deleted, what tests were added and whether they pass, and whether the app still builds/starts. If the slice is partially done (e.g. build fixed but entity not yet migrated), say so explicitly rather than implying the whole slice finished.
