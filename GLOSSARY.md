@@ -19,3 +19,7 @@ _Avoid_: Permission, Type
 **Admin**:
 The Role granted to exactly one bootstrapped Doctor account, with authority over patient/doctor records beyond a regular Doctor's own. Currently a convention (one hardcoded username), not an enforced Role — see [[future-improvements-review]].
 _Avoid_: Superuser, Root
+
+**Bill**:
+The charge for exactly one Treatment: its Amount and Date, and whether it has been Paid. Only a Doctor settles a Bill, when updating that Treatment. A Patient never does, and no real payment is ever taken. A Bill is either paid or unpaid. There's no partial-payment state.
+_Avoid_: Invoice, Payment, Transaction, Charge

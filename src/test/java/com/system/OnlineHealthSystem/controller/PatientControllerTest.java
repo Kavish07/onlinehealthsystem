@@ -1,15 +1,16 @@
 package com.system.OnlineHealthSystem.controller;
 
-import com.onlinehealthsystem.AppointmentDAO;
 import com.onlinehealthsystem.Doctor;
-import com.onlinehealthsystem.DoctorDAO;
-import com.onlinehealthsystem.TreatmentDAO;
+import com.system.OnlineHealthSystem.service.AppointmentService;
+import com.system.OnlineHealthSystem.service.BillService;
+import com.system.OnlineHealthSystem.service.DoctorService;
 import com.system.OnlineHealthSystem.service.PatientService;
+import com.system.OnlineHealthSystem.service.TreatmentService;
 import jakarta.servlet.http.HttpSession;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -33,17 +34,20 @@ class PatientControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @MockitoBean
     private PatientService patientService;
 
-    @MockBean
-    private DoctorDAO doctorDAO;
+    @MockitoBean
+    private DoctorService doctorService;
 
-    @MockBean
-    private TreatmentDAO treatmentDAO;
+    @MockitoBean
+    private TreatmentService treatmentService;
 
-    @MockBean
-    private AppointmentDAO appointmentDAO;
+    @MockitoBean
+    private AppointmentService appointmentService;
+
+    @MockitoBean
+    private BillService billService;
 
     @Test
     void login_forwardsToHomePage_andSetsSessionAttributes_forCorrectCredentials() throws Exception {
@@ -51,8 +55,8 @@ class PatientControllerTest {
         patient.setLoginID(7);
         patient.setUserName("jane.doe");
         when(patientService.login("jane.doe", "s3cret-pw")).thenReturn(Optional.of(patient));
-        when(doctorDAO.listDoctors()).thenReturn(List.of());
-        when(treatmentDAO.listTreatments(7)).thenReturn(List.of());
+        when(doctorService.listDoctors()).thenReturn(List.of());
+        when(treatmentService.listTreatments(7)).thenReturn(List.of());
 
         var result = mockMvc.perform(post("/PatientLoginServlet")
                         .param("username", "jane.doe")
@@ -128,9 +132,9 @@ class PatientControllerTest {
         Doctor admin = new Doctor();
         admin.setUserName("admin@gmail.com");
         session.setAttribute("doctor", admin);
-        when(doctorDAO.listDoctors()).thenReturn(List.of());
-        when(appointmentDAO.listAppointments()).thenReturn(List.of());
-        when(treatmentDAO.listAllTreatments()).thenReturn(List.of());
+        when(doctorService.listDoctors()).thenReturn(List.of());
+        when(appointmentService.listAppointments()).thenReturn(List.of());
+        when(treatmentService.listAllTreatments()).thenReturn(List.of());
         when(patientService.listPatients()).thenReturn(List.of());
 
         mockMvc.perform(post("/PatientDeleteServlet")

@@ -9,7 +9,7 @@ public class Treatment {
 	}
 	
 	public Treatment(int treatmentID, Date treatmentDate, String location, String departmentCode, String departmentName,
-			String treatmentName, String medicineCode, String medicineName, int patientID, String patientName, int doctorID, String doctorName, int billID, Date billDate, int billAmount) {
+			String treatmentName, String medicineCode, String medicineName, int patientID, String patientName, int doctorID, String doctorName, int billID, Date billDate, int billAmount, boolean billPaid) {
 		super();
 		this.treatmentID = treatmentID;
 		this.treatmentDate = treatmentDate;
@@ -26,6 +26,15 @@ public class Treatment {
 		this.billID = billID;
 		this.billDate = billDate;
 		this.billAmount = billAmount;
+		this.billPaid = billPaid;
+	}
+
+	public boolean isBillPaid() {
+		return billPaid;
+	}
+
+	public void setBillPaid(boolean billPaid) {
+		this.billPaid = billPaid;
 	}
 
 	public int getAppointmentID() {
@@ -171,4 +180,5 @@ public class Treatment {
 	private int billID;
 	private Date billDate;
 	private int billAmount;
+	private boolean billPaid;
 }

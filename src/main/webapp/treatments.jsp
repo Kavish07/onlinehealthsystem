@@ -23,6 +23,7 @@
 					<ul class="links">
 						<li><a href="appointments.jsp">Appointments</a></li>
 						<li><a href="treatments.jsp">Treatments</a></li>
+						<li><a href="bills.jsp">My Bills</a></li>
 						<li><a href="changepwd.jsp">Change password</a></li>
 						<li><a href="PatientLogoutServlet?loginID=${patient.getLoginID()}" style="width:auto;">Logout</a></li>
 					</ul>

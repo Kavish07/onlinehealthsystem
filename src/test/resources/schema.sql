@@ -18,7 +18,7 @@
 -- depends on, so that's what this schema gets right.
 
 CREATE TABLE Login (
-    LoginID INT AUTO_INCREMENT PRIMARY KEY,
+    LoginID INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     UserName VARCHAR(100) NOT NULL UNIQUE,
     UserPassword VARCHAR(255) NOT NULL,
     Salt VARCHAR(255) NOT NULL
@@ -35,7 +35,7 @@ CREATE TABLE Medicines (
 );
 
 CREATE TABLE Patients (
-    PatientID INT AUTO_INCREMENT PRIMARY KEY,
+    PatientID INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     LoginID INT NOT NULL UNIQUE,
     FirstName VARCHAR(100),
     LastName VARCHAR(100),
@@ -49,7 +49,7 @@ CREATE TABLE Patients (
 );
 
 CREATE TABLE Doctors (
-    DoctorID INT AUTO_INCREMENT PRIMARY KEY,
+    DoctorID INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     LoginID INT NOT NULL UNIQUE,
     FirstName VARCHAR(100),
     LastName VARCHAR(100),
@@ -66,36 +66,39 @@ CREATE TABLE Doctors (
 );
 
 CREATE TABLE LoginHistory (
-    LoginHistoryID INT AUTO_INCREMENT PRIMARY KEY,
+    LoginHistoryID INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     LoginID INT NOT NULL,
-    LoginDateTime DATETIME,
-    LogoutDateTime DATETIME
+    LoginDateTime TIMESTAMP,
+    LogoutDateTime TIMESTAMP
 );
 
 CREATE TABLE Appointments (
-    AppointmentId INT AUTO_INCREMENT PRIMARY KEY,
-    Date DATE,
+    AppointmentId INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    Date TIMESTAMP,
     Location VARCHAR(255),
     DepartmentCode VARCHAR(20),
-    PatientID INT NOT NULL COMMENT 'stores Login.LoginID of the patient',
-    DoctorID INT NOT NULL COMMENT 'stores Login.LoginID of the doctor',
+    -- PatientID/DoctorID store Login.LoginID (see header note above)
+    PatientID INT NOT NULL,
+    DoctorID INT NOT NULL,
     Approved BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE Bill (
-    BillID INT AUTO_INCREMENT PRIMARY KEY,
+    BillID INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     Date DATE,
-    Amount INT
+    Amount INT,
+    Paid boolean DEFAULT false
 );
 
 CREATE TABLE Treatments (
-    TreatmentId INT AUTO_INCREMENT PRIMARY KEY,
+    TreatmentId INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     Date DATE,
     Location VARCHAR(255),
     DepartmentCode VARCHAR(20),
     TreatmentName VARCHAR(100),
     MedicineCode VARCHAR(20),
-    PatientID INT NOT NULL COMMENT 'stores Login.LoginID of the patient',
-    DoctorID INT NOT NULL COMMENT 'stores Login.LoginID of the doctor',
+    -- PatientID/DoctorID store Login.LoginID (see header note above)
+    PatientID INT NOT NULL,
+    DoctorID INT NOT NULL,
     BillID INT
 );

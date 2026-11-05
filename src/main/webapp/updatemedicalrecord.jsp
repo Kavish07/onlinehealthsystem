@@ -37,7 +37,6 @@
 				<div class="wrapper">
 					<div>
 						<h3 class="major">Update medical record</h3>
-						<form name="appointmentForm" action="UpdateTreatmentServlet" method="post">
 							<div class="container">
 								<div class="table-wrapper">
 									<table class="alt">
@@ -52,6 +51,7 @@
 												<th>Medicines</th>
 												<th>Bill date</th>
 												<th>Bill amount</th>
+												<th>Paid</th>
 												<th></th>
 											</tr>
 										</thead>
@@ -59,12 +59,12 @@
 											<c:forEach var="treatment" items="${listAllTreatments}">
 												<tr id="${treatment.treatmentID}">
 													<td>
-														<input type="hidden" name="treatmentID" value="${treatment.treatmentID}" />
-														<input type="date" name="dateoftreatment" value="${treatment.treatmentDate}" style="color: black;" />
+														<input form="treatmentForm${treatment.treatmentID}" type="hidden" name="treatmentID" value="${treatment.treatmentID}" />
+														<input form="treatmentForm${treatment.treatmentID}" type="date" name="dateoftreatment" value="${treatment.treatmentDate}" style="color: black;" />
 													</td>
-	                								<td><input type="text" name="location" value="${treatment.location}" /></td>
+	                								<td><input form="treatmentForm${treatment.treatmentID}" type="text" name="location" value="${treatment.location}" /></td>
 	                								<td>
-	                									<select id="department" name="department">
+	                									<select form="treatmentForm${treatment.treatmentID}" id="department" name="department">
 															<option value="${treatment.departmentCode}">${treatment.departmentName}</option>
   															<option value="A01">Emergency Ward</option>
   															<option value="A02">Maternity Ward</option>
@@ -73,21 +73,27 @@
 														</select>
 	                								</td>
 	                								<td>
-	                									<input type="text" name="patient" value="${treatment.patientName}" disabled />
-	                									<input type="hidden" name="patientID" value="${treatment.patientID}" />
+	                									<input form="treatmentForm${treatment.treatmentID}" type="text" name="patient" value="${treatment.patientName}" disabled />
+	                									<input form="treatmentForm${treatment.treatmentID}" type="hidden" name="patientID" value="${treatment.patientID}" />
 	                								</td>
 	                								<td>
-	                									<input type="text" name="doctor" value="${treatment.doctorName}" disabled />
-	                									<input type="hidden" name="doctorID" value="${treatment.doctorID}" />
+	                									<input form="treatmentForm${treatment.treatmentID}" type="text" name="doctor" value="${treatment.doctorName}" disabled />
+	                									<input form="treatmentForm${treatment.treatmentID}" type="hidden" name="doctorID" value="${treatment.doctorID}" />
 	                								</td>
-						    						<td><input type="text" name="treatment" value="${treatment.treatmentName}" /></td>
-	                    							<td><input type="text" name="medicines" value="${treatment.medicineName}" /></td>
+						    						<td><input form="treatmentForm${treatment.treatmentID}" type="text" name="treatment" value="${treatment.treatmentName}" /></td>
+	                    							<td><input form="treatmentForm${treatment.treatmentID}" type="text" name="medicines" value="${treatment.medicineName}" /></td>
 	                    							<td>
-	                    								<input type="date" name="dateofbill" value="${treatment.billDate}" style="color: black;" />
-	                    								<input type="hidden" name="billID" value="${treatment.billID}" />
+	                    								<input form="treatmentForm${treatment.treatmentID}" type="date" name="dateofbill" value="${treatment.billDate}" style="color: black;" />
+	                    								<input form="treatmentForm${treatment.treatmentID}" type="hidden" name="billID" value="${treatment.billID}" />
 	                    							</td>
-													<td><input type="text" name="bill" value="${treatment.billAmount}" /></td>
-													<td><input type="submit" value="Update" class="primary" /></td>
+													<td><input form="treatmentForm${treatment.treatmentID}" type="text" name="bill" value="${treatment.billAmount}" /></td>
+													<td><input form="treatmentForm${treatment.treatmentID}" type="checkbox" name="paid" value="true" aria-label="Bill paid" ${treatment.billPaid ? 'checked disabled' : ''} /></td>
+													<td>
+														<%-- One form per row (a <form> cannot wrap a <tr>); every field in this row joins it via form="...", so Update posts only this row. --%>
+														<form id="treatmentForm${treatment.treatmentID}" action="UpdateTreatmentServlet" method="post">
+															<input type="submit" value="Update" class="primary" />
+														</form>
+													</td>
 												</tr>
 											</c:forEach>
 										</tbody>
@@ -95,7 +101,6 @@
 									
 								</div>
 							</div>
-						</form>
 					</div>
 				</div>
 			</section>
