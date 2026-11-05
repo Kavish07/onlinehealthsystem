@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -81,7 +82,7 @@
 				<!-- Content -->
 				<div class="wrapper">
 					<div class="inner">
-						<h3 class="major">Change password for user ${doctor.getFirstName()} ${doctor.getLastName()}</h3>
+						<h3 class="major">Change password for user ${fn:escapeXml(doctor.getFirstName())} ${fn:escapeXml(doctor.getLastName())}</h3>
 						<form name="changePwdForm"  onsubmit="return checkForm()" action="UpdatePatientPasswordServlet" method="post">
 							<div class="container">
 						    	<label for="old-password"><b>New Password</b></label>
@@ -93,9 +94,8 @@
 						    	<label for="password-repeat"><b>Repeat Password</b></label>
 						    	<input type="password" placeholder="Repeat Password" name="password-repeat" id="password-repeat" required />
 						    	
-						    	<input type="hidden" name="username" value="${doctor.getUserName()}" />
-						    	<input type="hidden" name="current-password" id="current-password" value="${doctor.getUserPassword()}" />
-						
+						    	<input type="hidden" name="username" value="${fn:escapeXml(doctor.getUserName())}" />
+
 								${message}
 								<p>&nbsp;</p>
 								<div class="col-12">
