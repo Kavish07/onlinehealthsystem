@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Local tooling ###
+# Project-local gh CLI config (holds an OAuth token) - used as a GH_CONFIG_DIR
+# override when the default global config location isn't usable in this
+# environment. Never commit this; it's a secret, not project config.
+.gh-config/

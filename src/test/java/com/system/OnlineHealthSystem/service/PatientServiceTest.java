@@ -4,9 +4,11 @@ import com.onlinehealthsystem.PasswordEncoder;
 import com.system.OnlineHealthSystem.entity.Login;
 import com.system.OnlineHealthSystem.entity.LoginHistory;
 import com.system.OnlineHealthSystem.entity.Patient;
+import com.system.OnlineHealthSystem.repository.AppointmentRepository;
 import com.system.OnlineHealthSystem.repository.LoginHistoryRepository;
 import com.system.OnlineHealthSystem.repository.LoginRepository;
 import com.system.OnlineHealthSystem.repository.PatientRepository;
+import com.system.OnlineHealthSystem.repository.TreatmentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,14 +16,12 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -39,11 +39,18 @@ class PatientServiceTest {
     @Mock
     private LoginHistoryRepository loginHistoryRepository;
 
+    @Mock
+    private AppointmentRepository appointmentRepository;
+
+    @Mock
+    private TreatmentRepository treatmentRepository;
+
     private PatientService patientService;
 
     @BeforeEach
     void setUp() {
-        patientService = new PatientService(loginRepository, patientRepository, loginHistoryRepository);
+        patientService = new PatientService(loginRepository, patientRepository, loginHistoryRepository,
+                appointmentRepository, treatmentRepository);
     }
 
     private Login loginWithPassword(String userName, String rawPassword) {
@@ -112,7 +119,7 @@ class PatientServiceTest {
         });
 
         com.onlinehealthsystem.Patient result = patientService.register("jane.doe", "s3cret-pw", "Jane", "Doe",
-                "N12345", Date.valueOf("1990-01-01"), "F", "1 Main St", "Springfield", 65, 170);
+                "N12345", LocalDate.of(1990, 1, 1), "F", "1 Main St", "Springfield", 65, 170);
 
         assertThat(result.getLoginID()).isEqualTo(42);
         assertThat(result.getUserName()).isEqualTo("jane.doe");
@@ -136,8 +143,8 @@ class PatientServiceTest {
     void deletePatient_cascadesAcrossAppointmentsTreatmentsPatientsLoginHistoryAndLogin() {
         patientService.deletePatient(7);
 
-        verify(patientRepository).deleteAppointmentsByPatientLoginId(7);
-        verify(patientRepository).deleteTreatmentsByPatientLoginId(7);
+        verify(appointmentRepository).deleteByPatientLoginId(7);
+        verify(treatmentRepository).deleteByPatientLoginId(7);
         verify(patientRepository).deleteByLogin_LoginId(7);
         verify(loginHistoryRepository).deleteByLoginId(7);
         verify(loginRepository).deleteById(7);

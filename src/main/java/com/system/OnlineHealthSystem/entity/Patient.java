@@ -29,6 +29,13 @@ public class Patient {
     @Column(name = "PatientID")
     private Integer patientId;
 
+    // fetch = LAZY is only honored here because every current caller
+    // (PatientRepository.findAllWithLogin()) explicitly `join fetch`es this
+    // association. Hibernate can't actually lazy-load a single-valued
+    // owning-side @OneToOne without bytecode enhancement, which this project
+    // doesn't configure - a future findById()/findAll() caller that skips
+    // the join fetch and then calls getLogin() will silently issue one extra
+    // SELECT per row instead of getting real lazy loading.
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "LoginID", nullable = false, unique = true)
     private Login login;

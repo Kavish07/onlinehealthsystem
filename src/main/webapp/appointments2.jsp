@@ -56,7 +56,7 @@
 										<tbody>
 											<c:forEach var="appointment" items="${listAppointments}">
 												<tr id="${appointment.appointmentID}">
-													<td><input type="date" name="date${appointment.appointmentID}" value="${appointment.appointmentDate}" style="color: black;" disabled/></td>
+													<td><input type="text" name="date${appointment.appointmentID}" value="${appointment.appointmentDate}" style="color: black;" disabled/></td>
 	                								<td><input type="text" name="location${appointment.appointmentID}" value="${appointment.location}" disabled/></td>
 	                								<td><input type="text" name="department${appointment.appointmentID}" value="${appointment.departmentName}" disabled/></td>
 	                								<td><input type="text" name="doctor${appointment.appointmentID}" value="${appointment.doctorName}" disabled /></td>

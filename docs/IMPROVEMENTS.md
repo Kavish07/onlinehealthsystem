@@ -28,9 +28,9 @@ Start this work only after the migration PRD reaches its end state (zero referen
 - Introduce SLF4J (already pulled in transitively by Spring Boot) at exception catch/rethrow sites across both the legacy DAO/Servlet code and the migrated Spring code. A full observability stack (metrics/tracing) is out of scope for this project's size.
 
 ### 4. Deployment
-- ~~Local Dockerfile/docker-compose~~ Done, and extended to live hosting ahead of schedule: `Dockerfile` + `docker-entrypoint.sh` run MySQL and the app as two processes in one container (see [ADR 0003](./adr/0003-colocate-app-and-mysql-for-deployment.md) for why, instead of a two-container docker-compose setup or externalizing the hardcoded JDBC URL). `fly.toml` plus the `deploy` job in `.github/workflows/ci.yml` deploy that same image to Fly.io on every push to `master`.
-- Manual one-time setup still required (can't be done from CI): create the Fly app and its `mysql_data` volume, and add a `FLY_API_TOKEN` repo secret — see the PR/commit notes for exact commands.
-- Still pending: externalizing DB credentials to environment variables for the *local* (non-Fly) case — not needed for the Fly deploy itself, since `root`/`root` is fine inside a single-tenant container nobody else can reach directly.
+- ~~Local Dockerfile/docker-compose~~ Done, and extended to live hosting ahead of schedule: `Dockerfile` + `docker-entrypoint.sh` run PostgreSQL and the app as two processes in one container (see [ADR 0003](./adr/0003-colocate-app-and-mysql-for-deployment.md) for why, instead of a two-container docker-compose setup or externalizing the hardcoded JDBC URL, and [ADR 0004](./adr/0004-migrate-database-to-postgresql.md) for the MySQL→PostgreSQL switch). `fly.toml` plus the `deploy` job in `.github/workflows/ci.yml` deploy that same image to Fly.io on every push to `master`.
+- Manual one-time setup still required (can't be done from CI): create the Fly app and its `postgres_data` volume, and add a `FLY_API_TOKEN` repo secret — see the PR/commit notes for exact commands.
+- Still pending: externalizing DB credentials to environment variables for the *local* (non-Fly) case — not needed for the Fly deploy itself, since `postgres`/`root` is fine inside a single-tenant container nobody else can reach directly.
 
 ### 5. Dependency hygiene
 - Remove the `com.efsavage.jquery:jquery-maven` dependency from `pom.xml` — it's dead weight; the jQuery actually served to the browser is the vendored `src/main/webapp/assets/js/jquery.min.js`, not anything this Maven artifact provides.

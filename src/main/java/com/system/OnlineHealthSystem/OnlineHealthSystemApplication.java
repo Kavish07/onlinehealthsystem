@@ -4,12 +4,19 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * Entry point for the incremental Spring Boot migration of OnlineHealthSystem.
- * Lives alongside the legacy {@code com.onlinehealthsystem} Servlet/JDBC app
- * (still the active runtime for any entity/feature not yet migrated) and is
- * intentionally a thin, minimal scaffold: migrated slices register their own
+ * Sole entry point for OnlineHealthSystem, now that every entity/feature
+ * (Patient, Doctor, Appointment, Treatment, LoginHistory) has been migrated
+ * off the legacy {@code com.onlinehealthsystem} Servlet/JDBC app onto
  * {@code @Entity}/{@code @Repository}/{@code @Service}/{@code @Controller}
- * beans, auto-detected via component scanning under this package.
+ * beans under this package, auto-detected via component scanning.
+ *
+ * <p>The legacy package's remaining classes
+ * ({@code com.onlinehealthsystem.Patient}/{@code Doctor}/{@code Appointment}
+ * /{@code Treatment}, {@code PasswordEncoder}, {@code AppConstants}) are
+ * plain POJOs/utility classes still referenced by this package's
+ * services/controllers (e.g. for session attributes and password hashing);
+ * none of them are {@code @WebServlet}s, so there is nothing left for
+ * {@code @ServletComponentScan} to register, and it has been removed.
  */
 @SpringBootApplication
 public class OnlineHealthSystemApplication {

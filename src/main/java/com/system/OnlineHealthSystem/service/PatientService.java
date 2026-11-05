@@ -4,13 +4,16 @@ import com.onlinehealthsystem.PasswordEncoder;
 import com.system.OnlineHealthSystem.entity.Login;
 import com.system.OnlineHealthSystem.entity.LoginHistory;
 import com.system.OnlineHealthSystem.entity.Patient;
+import com.system.OnlineHealthSystem.repository.AppointmentRepository;
 import com.system.OnlineHealthSystem.repository.LoginHistoryRepository;
 import com.system.OnlineHealthSystem.repository.LoginRepository;
 import com.system.OnlineHealthSystem.repository.PatientRepository;
+import com.system.OnlineHealthSystem.repository.TreatmentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -34,12 +37,17 @@ public class PatientService {
     private final LoginRepository loginRepository;
     private final PatientRepository patientRepository;
     private final LoginHistoryRepository loginHistoryRepository;
+    private final AppointmentRepository appointmentRepository;
+    private final TreatmentRepository treatmentRepository;
 
     public PatientService(LoginRepository loginRepository, PatientRepository patientRepository,
-            LoginHistoryRepository loginHistoryRepository) {
+            LoginHistoryRepository loginHistoryRepository, AppointmentRepository appointmentRepository,
+            TreatmentRepository treatmentRepository) {
         this.loginRepository = loginRepository;
         this.patientRepository = patientRepository;
         this.loginHistoryRepository = loginHistoryRepository;
+        this.appointmentRepository = appointmentRepository;
+        this.treatmentRepository = treatmentRepository;
     }
 
     /**
@@ -86,7 +94,7 @@ public class PatientService {
      */
     @Transactional
     public com.onlinehealthsystem.Patient register(String userName, String rawPassword, String firstName,
-            String lastName, String nationalId, Date dateOfBirth, String sex, String address, String city,
+            String lastName, String nationalId, LocalDate dateOfBirth, String sex, String address, String city,
             int weight, int height) {
         String salt = PasswordEncoder.getSaltvalue(SALT_LENGTH);
         String hashedPassword = PasswordEncoder.generateSecurePassword(rawPassword, salt);
@@ -102,7 +110,7 @@ public class PatientService {
         profile.setFirstName(firstName);
         profile.setLastName(lastName);
         profile.setNationalId(nationalId);
-        profile.setDateOfBirth(dateOfBirth == null ? null : dateOfBirth.toLocalDate());
+        profile.setDateOfBirth(dateOfBirth);
         profile.setSex(sex);
         profile.setAddress(address);
         profile.setCity(city);
@@ -118,12 +126,22 @@ public class PatientService {
      * across Appointments, Treatments, Patients, LoginHistory and Login -
      * all keyed by this person's {@code Login.LoginID} (stored directly in
      * Appointments/Treatments' own {@code PatientID} column, not
-     * {@code Patients.PatientID}; see schema.sql).
+     * {@code Patients.PatientID}; see schema.sql). The Appointments delete
+     * now goes through {@link AppointmentRepository} - that entity/
+     * repository didn't exist yet when this method was first written, so
+     * it used to go through a native-SQL placeholder on
+     * {@code PatientRepository} instead (see that interface's javadoc);
+     * now that the Appointment slice exists, routing through its own
+     * repository is both more correct (JPQL validated against the entity
+     * model, not a raw table/column-name string) and keeps appointment
+     * deletion logic in one place. The Treatments delete made the same move
+     * once the Treatment slice gave it a real JPA entity/repository too -
+     * see {@code TreatmentRepository.deleteByPatientLoginId}.
      */
     @Transactional
     public void deletePatient(int loginId) {
-        patientRepository.deleteAppointmentsByPatientLoginId(loginId);
-        patientRepository.deleteTreatmentsByPatientLoginId(loginId);
+        appointmentRepository.deleteByPatientLoginId(loginId);
+        treatmentRepository.deleteByPatientLoginId(loginId);
         patientRepository.deleteByLogin_LoginId(loginId);
         loginHistoryRepository.deleteByLoginId(loginId);
         loginRepository.deleteById(loginId);

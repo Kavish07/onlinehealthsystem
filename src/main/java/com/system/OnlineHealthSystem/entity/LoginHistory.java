@@ -10,14 +10,20 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 
 /**
- * Maps the {@code LoginHistory} table. Created ahead of the dedicated
- * LoginHistory slice (see the migration PRD) because it's a prerequisite
- * for this one: {@code checkLogin}/{@code registerLogout}'s behavior - an
- * inserted row on login, a stamped {@code LogoutDateTime} on logout - has
- * to be preserved as part of the Patient login/logout flows. The future
- * LoginHistory slice is expected to build a service/controller/reporting
- * layer on top of this entity and retire {@code LoginHistoryDAO}, not to
- * introduce the entity itself.
+ * Maps the {@code LoginHistory} table. Created during the Patient slice
+ * (ahead of the dedicated LoginHistory slice) because it was a prerequisite
+ * for that one: {@code checkLogin}/{@code registerLogout}'s behavior - an
+ * inserted row on login, a stamped {@code LogoutDateTime} on logout - had
+ * to be preserved as part of the Patient/Doctor login/logout flows.
+ *
+ * <p>The LoginHistory slice itself turned out to be pure cleanup: this
+ * entity, {@link com.system.OnlineHealthSystem.repository.LoginHistoryRepository},
+ * and the {@code PatientService}/{@code DoctorService} callers were already
+ * fully wired up by the time that slice ran. {@code LoginHistoryDAO} (and
+ * the legacy {@code com.onlinehealthsystem.LoginHistory} model, which had no
+ * remaining callers) were deleted then, with no new
+ * service/controller/reporting layer needed - LoginHistory was always an
+ * internal audit mechanism, never its own user-facing endpoint.
  */
 @Entity
 @Table(name = "LoginHistory")

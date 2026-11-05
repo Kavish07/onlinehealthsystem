@@ -7,8 +7,8 @@ primary_region = "iad"
 [build]
 
 [mounts]
-  source = "mysql_data"
-  destination = "/var/lib/mysql"
+  source = "postgres_data"
+  destination = "/var/lib/postgresql"
 
 [http_service]
   internal_port = 8080

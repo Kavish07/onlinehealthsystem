@@ -55,8 +55,9 @@
 						<h3 class="major">Appointment</h3>
 						<form name="appointmentForm"  onsubmit="return checkForm()" action="NewAppointmentServlet" method="post">
 							<div class="container">	
-								<label for="dateofappointment"><b>Date of appointment</b></label>
-						    	<input type="date" placeholder="Enter Date of appointment" name="dateofappointment" style="color: black;" required />
+								${message}
+								<label for="dateofappointment"><b>Date and time of appointment</b></label>
+						    	<input type="datetime-local" placeholder="Enter date and time of appointment" name="dateofappointment" style="color: black;" required />
 						    	
 						    	<label for="location"><b>Location</b></label>
 						    	<input type="text" name="location" value="Pamplemousses" disabled />

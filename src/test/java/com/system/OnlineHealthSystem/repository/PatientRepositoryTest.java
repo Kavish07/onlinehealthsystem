@@ -4,8 +4,7 @@ import com.system.OnlineHealthSystem.entity.Login;
 import com.system.OnlineHealthSystem.entity.Patient;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.jdbc.Sql;
+import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 
 import java.time.LocalDate;
 
@@ -80,20 +79,8 @@ class PatientRepositoryTest {
         assertThat(patientRepository.findByLogin_LoginId(login.getLoginId())).isEmpty();
     }
 
-    @Test
-    @Sql(statements = {
-            "insert into Appointments (Date, Location, DepartmentCode, PatientID, DoctorID, Approved) "
-                    + "values ('2026-01-01', 'Room 1', null, 42, 7, false)",
-            "insert into Treatments (Date, Location, DepartmentCode, TreatmentName, MedicineCode, PatientID, DoctorID, BillID) "
-                    + "values ('2026-01-01', 'Room 1', null, 'Checkup', null, 42, 7, null)"
-    })
-    void deleteAppointmentsAndTreatmentsByPatientLoginId_removeOnlyMatchingRows() {
-        patientRepository.deleteAppointmentsByPatientLoginId(42);
-        patientRepository.deleteTreatmentsByPatientLoginId(42);
-
-        // No assertion API for raw tables via this repository; absence of an
-        // exception plus the companion service-level test cover the intent.
-        // This test mainly guards the native SQL stays syntactically valid
-        // against the real column names (PatientID, not LoginID).
-    }
+    // The deleteTreatmentsByPatientLoginId native-SQL placeholder that used
+    // to be tested here moved to TreatmentRepository.deleteByPatientLoginId
+    // once the Treatment slice gave it a real JPA entity/repository to
+    // belong to - see TreatmentRepositoryTest and PatientService.deletePatient().
 }

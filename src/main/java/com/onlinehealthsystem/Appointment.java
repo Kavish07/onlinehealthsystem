@@ -1,6 +1,6 @@
 package com.onlinehealthsystem;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 public class Appointment {
 	
@@ -8,7 +8,7 @@ public class Appointment {
 		super();
 	}
 	
-	public Appointment(Date date, String location, String departmentCode, String departmentName, int patientID, String patientName, int doctorID, String doctorName, Boolean approved) {
+	public Appointment(Timestamp date, String location, String departmentCode, String departmentName, int patientID, String patientName, int doctorID, String doctorName, Boolean approved) {
 		super();
 		this.appointmentDate = date;
 		this.location = location;
@@ -21,7 +21,7 @@ public class Appointment {
 		this.approved = approved;
 	}
 	
-	public Appointment(int appointmentID, Date date, String location, String departmentCode, String departmentName, int patientID, String patientName, int doctorID, String doctorName, Boolean approved) {
+	public Appointment(int appointmentID, Timestamp date, String location, String departmentCode, String departmentName, int patientID, String patientName, int doctorID, String doctorName, Boolean approved) {
 		super();
 		this.appointmentID = appointmentID;
 		this.appointmentDate = date;
@@ -43,11 +43,11 @@ public class Appointment {
 		this.appointmentID = appointmentID;
 	}
 	
-	public Date getAppointmentDate() {
+	public Timestamp getAppointmentDate() {
 		return appointmentDate;
 	}
-	
-	public void setAppointmentDate(Date date) {
+
+	public void setAppointmentDate(Timestamp date) {
 		this.appointmentDate = date;
 	}
 	
@@ -116,7 +116,7 @@ public class Appointment {
 	}
 
 	private int appointmentID;
-	private Date appointmentDate;
+	private Timestamp appointmentDate;
 	private String location;
 	private String departmentCode;
 	private String departmentName;

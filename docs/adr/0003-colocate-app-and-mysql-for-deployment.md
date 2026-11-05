@@ -1,6 +1,6 @@
 # Co-locate app and MySQL in one container instead of externalizing the JDBC URL
 
-Status: proposed
+Status: superseded by [0004](./0004-migrate-database-to-postgresql.md) (MySQL → PostgreSQL; the co-location rationale itself still holds)
 
 Deploying this app anywhere beyond a developer's own machine raises an obvious question: why not point it at a managed MySQL database over the network, the normal PaaS pattern? The legacy `com.onlinehealthsystem` DAOs hardcode `jdbc:mysql://localhost:3306` with `root`/`root`, with no way to inject a different host — CLAUDE.md flags this as a known, deliberate pattern, not something to silently fix in an unrelated change. Rather than editing every legacy DAO to read a configurable JDBC URL, both the local Docker image and the Fly.io deployment run `mysqld` and the Spring Boot app as two processes inside one container, so "localhost" resolves correctly without touching the legacy code.
 
