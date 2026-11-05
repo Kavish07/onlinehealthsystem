@@ -46,3 +46,6 @@ build/
 ### AI assistant tooling (local-only, not published to GitHub) ###
 .claude/
 .agents/
+
+
+skills-lock.json
