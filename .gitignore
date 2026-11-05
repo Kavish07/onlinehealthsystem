@@ -42,3 +42,7 @@ build/
 # (spring.config.import). Never commit this; see .env.example for the
 # expected variables.
 .env
+
+### AI assistant tooling (local-only, not published to GitHub) ###
+.claude/
+.agents/
